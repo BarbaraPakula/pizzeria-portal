@@ -1,3 +1,11 @@
+# Development
+
+http://localhost:3000 - bieżący projekt, czyli panel administracyjny (webpack-dev-server)
+http://localhost:3131 - strona pizzerii dla klientów
+http://localhost:3131/api - url API projektu
+http://localhost:3131/api/db - podgląd całej bazy danych w API
+http://localhost:3131/panel -stan bieżącego projektu (panelu adm.) z momentu uruchomienia (yarn start)
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
