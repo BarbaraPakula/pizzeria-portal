@@ -2,4 +2,15 @@
 
 .component {
   padding: $base-size;
+  margin-top: $base-size;
+  text-align: center;
+}
+
+.form{
+  display: flex;
+  justify-content: center;
+  div{
+    min-width: 150px;
+    padding-right:5px ;
+  }
 }

@@ -1,5 +1,9 @@
 @import '../../../styles/settings.scss';
 
 .component {
-  padding: $base-size;
+  padding: $base-size ;
+}
+
+.btn {
+  margin: 5px;
 }
