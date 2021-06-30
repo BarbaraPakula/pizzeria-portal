@@ -17,63 +17,56 @@ class Waiter extends React.Component {
       error: PropTypes.oneOfType([PropTypes.bool, PropTypes.string]),
     }),
     tables: PropTypes.any,
-    fetchChangeStatus: PropTypes.func,
-  }
+    updateStatus: PropTypes.func,
+  };
 
   componentDidMount() {
     const { fetchTables } = this.props;
     fetchTables();
   }
 
-  changeTableStatus(row) {
-    const status = row.status;
-    switch (status) {
-      case 'free': { row.status = 'thinking'; break; }
-      case 'thinking': { row.status = 'ordered'; break; }
-      case 'ordered': { row.status = 'prepared'; break; }
-      case 'prepared': { row.status = 'delivered'; break; }
-      case 'delivered': { row.status = 'paid'; break; }
-      case 'paid': { row.status = 'free'; break; }
-      default: { row.status = 'free'; break; }
-    }
-    const { fetchChangeStatus } = this.props;
-    fetchChangeStatus(row);
-  }
-
-  renderActions(row) {
-    const status = row.status;
+  renderActions(id, status) {
     switch (status) {
       case 'free':
         return (
           <>
-            <Button onClick={() => { this.changeTableStatus(row); }}>thinking</Button>
-
-            <Button onClick={() => { this.changeTableStatus(row); }}>new order</Button>
-
+            <Button onClick={() => this.props.updateStatus(id, 'thinking')}>
+              thinking
+            </Button>
+            <Button onClick={() => this.props.updateStatus(id, 'ordered')}>
+              new order
+            </Button>
           </>
         );
       case 'thinking':
         return (
-          <Button onClick={() => { this.changeTableStatus(row); }}>new order</Button>
-
+          <Button onClick={() => this.props.updateStatus(id, 'ordered')}>
+            new order
+          </Button>
         );
       case 'ordered':
         return (
-          <Button onClick={() => { this.changeTableStatus(row); }}>prepared</Button>
+          <Button onClick={() => this.props.updateStatus(id, 'prepared')}>
+            prepared
+          </Button>
         );
       case 'prepared':
         return (
-          <Button onClick={() => { this.changeTableStatus(row); }}>delivered</Button>
-
+          <Button onClick={() => this.props.updateStatus(id, 'delivered')}>
+            delivered
+          </Button>
         );
       case 'delivered':
         return (
-          <Button onClick={() => { this.changeTableStatus(row); }}>paid</Button>
-
+          <Button onClick={() => this.props.updateStatus(id, 'paid')}>
+            paid
+          </Button>
         );
       case 'paid':
         return (
-          <Button onClick={() => { this.changeTableStatus(row); }}>free</Button>
+          <Button onClick={() => this.props.updateStatus(id, 'free')}>
+            free
+          </Button>
         );
       default:
         return null;
@@ -81,7 +74,10 @@ class Waiter extends React.Component {
   }
 
   render() {
-    const { loading: { active, error }, tables } = this.props;
+    const {
+      loading: { active, error },
+      tables,
+    } = this.props;
 
     if (active || !tables.length) {
       return (
@@ -109,23 +105,23 @@ class Waiter extends React.Component {
               </TableRow>
             </TableHead>
             <TableBody>
-              {tables.map(row => (
+              {tables.map((row) => (
                 <TableRow key={row.id}>
                   <TableCell component="th" scope="row">
                     {row.id}
                   </TableCell>
-                  <TableCell>
-                    {row.status}
-                  </TableCell>
+                  <TableCell>{row.status}</TableCell>
                   <TableCell>
                     {row.order && (
-                      <Button to={`${process.env.PUBLIC_URL}/waiter/order/${row.order}`}>
+                      <Button
+                        to={`${process.env.PUBLIC_URL}/waiter/order/${row.order}`}
+                      >
                         {row.order}
                       </Button>
                     )}
                   </TableCell>
                   <TableCell>
-                    {this.renderActions(row)}
+                    {this.renderActions(row.id, row.status)}
                   </TableCell>
                 </TableRow>
               ))}
